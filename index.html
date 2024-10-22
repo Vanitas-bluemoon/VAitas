@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>image-Slider with Customizable Themes</title>
+    <style>
+    .page{
+    background:var(--primary-color);
+    background-attachment: fixed;
+    }
+
+    .carousel-container {
+    width: 900px;
+    height: 500px;
+    margin: auto;
+    margin-top: 10px;
+    overflow: hidden;
+    position: relative;
+    }
+
+    .carousel-slides {
+    display: flex;
+    transition: transform 1.5s ease;
+    }
+
+    .carousel-slides img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    }
+
+    .carousel-controls {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    transform: translateY(-50%);
+    display: flex;
+    justify-content: space-between;
+    }
+
+    .carousel-controls button {
+    background-color: transparent;
+    border: none;
+    color: var(--secondary-color);
+    font-size: 50px;
+    cursor: pointer;
+    }
+
+    :root{
+    --primary-color: linear-gradient(rgb(209, 3, 144),#ef0505);
+    --secondary-color: red
+    }
+
+    .dark-theme{
+    --primary-color: linear-gradient(rgb(2, 1, 76),rgb(6, 0, 27));
+    --secondary-color: #ffffff;
+    }
+
+    nav{
+    width: 99%;
+    margin: auto;
+    padding: 10px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    }
+
+
+    #icon{
+    width: 30px;
+    cursor: pointer;
+    }
+    </style>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body class="page">
+    <nav>
+        <img src="https://cdn3.iconfinder.com/data/icons/transparent-on-dark-grey/500/icon-01-64.png" id="icon">
+    </nav>
+
+    <div class="carousel-container">
+        <div class="carousel-slides">
+            <img src="https://images.pexels.com/photos/1482822/pexels-photo-1482822.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="A Temple">
+            <img src="https://images.pexels.com/photos/28825952/pexels-photo-28825952/free-photo-of-graceful-indian-dance-silhouette-in-black-and-white.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Dancer">
+            <img src="https://images.pexels.com/photos/28292140/pexels-photo-28292140/free-photo-of-a-sunrise-over-a-valley-with-trees-and-hills.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Sun Shine">
+            <img src="https://images.pexels.com/photos/28390187/pexels-photo-28390187/free-photo-of-texture-of-a-beautiful-carpet.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="A design">
+            <img src="https://images.pexels.com/photos/9443525/pexels-photo-9443525.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="I am Cup">
+            <img src="https://images.pexels.com/photos/28917346/pexels-photo-28917346/free-photo-of-snowy-landscape-in-krieglach-austria.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="A House">
+            <img src="https://images.pexels.com/photos/28864480/pexels-photo-28864480/free-photo-of-tranquil-beach-sunset-with-vibrant-sky.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="evening scene">
+            <img src="https://images.pexels.com/photos/28748476/pexels-photo-28748476/free-photo-of-vintage-camera-on-autumn-leaves-with-book.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="A Camera">
+            <img src="https://images.pexels.com/photos/28145251/pexels-photo-28145251/free-photo-of-black-and-white-photo-of-a-mountain-range-with-a-tree.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Shussh...">
+            <img src="https://images.pexels.com/photos/26600776/pexels-photo-26600776/free-photo-of-a-seashore-at-dusk.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="The Hope of Light">
+        </div>
+
+        <div class="carousel-controls">
+            <button class="prev-btn">&#10094;</button>
+            <button class="next-btn">&#10095;</button>
+        </div>
+    </div>
+    <script>
+        const carouselSlides = document.querySelector('.carousel-slides');
+        const prevBtn = document.querySelector('.prev-btn');
+        const nextBtn = document.querySelector('.next-btn');
+        var icon = document.getElementById("icon");
+
+        let slideIndex = 0;
+        const slideWidth = carouselSlides.offsetWidth;
+        carouselSlides.style.transform = `translateX(-${(localStorage.getItem("button")) * slideWidth}px)`;
+
+        //scrolls the slider 
+        function showSlide(index) {
+                carouselSlides.style.transform = `translateX(-${index * slideWidth}px)`;
+             }
+
+        //sets the previous theme settings after reload
+        document.body.classList.add(localStorage.getItem("theme"));
+
+
+        //determines which icon to stay after reload
+        if(document.body.classList.contains("dark-theme")){
+                icon.src = "https://cdn2.iconfinder.com/data/icons/flat-icons-19/512/Fire.png"
+             }
+        else{
+            icon.src = "https://cdn3.iconfinder.com/data/icons/transparent-on-dark-grey/500/icon-01-64.png"}
+
+
+        //what previous dutton do on click
+            prevBtn.addEventListener('click', () => {
+             slideIndex = (slideIndex - 1 + carouselSlides.children.length) % carouselSlides.children.length;
+            showSlide(slideIndex);
+
+            const value = slideIndex;
+             localStorage.setItem('button', value);
+            });
+
+            //what next buttin do on click
+            nextBtn.addEventListener('click', () => {
+            slideIndex = (slideIndex + 1) % carouselSlides.children.length;
+            showSlide(slideIndex);
+
+            const value = slideIndex;
+             localStorage.setItem('button', value);
+            });
+
+            //changes the icon for light mode and dark mode 
+            icon.onclick=function(){
+            //toggle between light and dark mode
+            document.body.classList.toggle("dark-theme");//statement to replace
+              if(document.body.classList.contains("dark-theme")){
+                  icon.src = "https://cdn2.iconfinder.com/data/icons/flat-icons-19/512/Fire.png"
+                  localStorage.setItem('theme', ("dark-theme"));
+                }
+                else{
+                    icon.src = "https://cdn3.iconfinder.com/data/icons/transparent-on-dark-grey/500/icon-01-64.png"
+                    localStorage.setItem('theme', ("root"));  
+                }
+             }
+     </script>
+</body>
+</html>
